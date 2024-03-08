@@ -2,13 +2,11 @@ package domain
 
 import (
 	"context"
-	"net/url"
 
 	"github.com/hsxflowers/cat-api/exceptions"
 )
 
 const MIN_LENGTH_CAT_ID = 3
-const MIN_LENGTH_TAG = 3
 
 type CatStorage interface {
 	Get(ctx context.Context, tag string) (*Cat, error)
@@ -30,16 +28,12 @@ func (u *CatRequest) Validate() error {
 		return exceptions.ErrCatIdIsRequired
 	}
 
-	if u.Tag == "" || len(u.Tag) < MIN_LENGTH_TAG {
-		return exceptions.ErrTagIsNotValid
-	}
-
-	if u.Url != "" {
-		_, err := url.ParseRequestURI(u.Url)
-		if err != nil {
-			return exceptions.ErrUrlIsNotValid
-		}
-	}
+	// if u.Url == "" {
+	// 	_, err := url.ParseRequestURI(u.Url)
+	// 	if err != nil {
+	// 		return exceptions.ErrUrlIsNotValid
+	// 	}
+	// }
 
 	return nil
 }

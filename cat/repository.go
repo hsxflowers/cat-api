@@ -19,8 +19,8 @@ func NewCatRepository(database domain.CatDatabase) *CatRepository {
 	}
 }
 
-func (repo *CatRepository) Get(ctx context.Context, catId string) (*domain.Cat, error) {
-	response, err := repo.database.Get(ctx, catId)
+func (repo *CatRepository) Get(ctx context.Context, catTag string) (*domain.Cat, error) {
+	response, err := repo.database.Get(ctx, catTag)
 	if err != nil {
 		if err.Error() == "not found" {
 			log.Error("cat_repo: cat_id not found", err)

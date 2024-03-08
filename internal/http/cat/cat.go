@@ -35,13 +35,13 @@ func NewCatHandler(ctx context.Context, catService domain.Service) CatHandler {
 //	@Failure		500			"internal Server Error"
 //	@Router			/cat/{:tag} [get]
 func (h *CatHandler) Get(c echo.Context) error {
-	channelId := c.Param("channel_id")
-	if channelId == "" || channelId == ":channel_id" {
+	tag := c.Param("tag")
+	if tag == "" || tag == ":tag" {
 		log.Error("handler_get: tag is required.", exceptions.ErrTagIsNotValid)
 		return exceptions.New(exceptions.ErrTagIsRequired, nil)
 	}
 
-	response, err := h.catService.Get(h.ctx, channelId)
+	response, err := h.catService.Get(h.ctx, tag)
 	if err != nil {
 		log.Error("handler_get: error on get a cat.", err)
 		return err

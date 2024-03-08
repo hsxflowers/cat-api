@@ -2,8 +2,12 @@ package router
 
 import (
 	"context"
+	"database/sql"
+	_ "github.com/lib/pq"
+
 
 	"github.com/hsxflowers/cat-api/cat"
+	catDatabase "github.com/hsxflowers/cat-api/cat/db"
 	"github.com/hsxflowers/cat-api/cat/domain"
 	"github.com/hsxflowers/cat-api/config"
 	catHandler "github.com/hsxflowers/cat-api/internal/http/cat" // cat Handler
@@ -17,17 +21,14 @@ func Handlers(envs *config.Environments) *echo.Echo {
 	ctx := context.Background()
 
 	var catDb domain.CatDatabase
-	// var err error
-	// var cassandraSession *cassandra.CassandraConnection
+	var err error
 
-	// cassandraSession, err = cassandra.NewCassandraDatabase(envs, log)
+    db, err := sql.Open("postgres", "postgres://hsxflowers:N9tiQ81qNuzKP8Axv0Ae8aXZU8Pg6APf@dpg-cnl6bn7sc6pc73cc28vg-a.oregon-postgres.render.com/dbcat?sslmode=require")
+    if err != nil {
+        log.Fatal("Error connecting to the database: ", err)
+    }
 
-	// if err != nil {
-	// 	log.Errorf("Error connecting to Cat CassandraDB: %v", err)
-	// 	panic(err)
-	// }
-
-	// catDb = catCassandra.NewCassandraStore(cassandraSession, envs, log)
+	catDb = catDatabase.NewSQLStore(db)
 
 	log.Debug("")
 
@@ -39,7 +40,7 @@ func Handlers(envs *config.Environments) *echo.Echo {
 
 	cat := e.Group("cat")
 
-	cat.GET("/:cat_id", catHandler.Get)
+	cat.GET("/:tag", catHandler.Get)
 	cat.POST("", catHandler.Create)
 
 	return e
