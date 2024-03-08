@@ -2,6 +2,7 @@ package domain
 
 import (
 	"context"
+	url "net/url"
 
 	"github.com/hsxflowers/cat-api/exceptions"
 )
@@ -24,53 +25,45 @@ type Service interface {
 }
 
 func (u *CatRequest) Validate() error {
-	if u.CatId == "" || len(u.CatId) < MIN_LENGTH_CAT_ID {
-		return exceptions.ErrCatIdIsRequired
-	}
 
-	// if u.Url == "" {
-	// 	_, err := url.ParseRequestURI(u.Url)
-	// 	if err != nil {
-	// 		return exceptions.ErrUrlIsNotValid
-	// 	}
-	// }
+	if u.Url == "" {
+		_, err := url.ParseRequestURI(u.Url)
+		if err != nil {
+			return exceptions.ErrUrlIsNotValid
+		}
+	}
 
 	return nil
 }
 
 func (u *CatRequest) ToCatsDomain() *Cat {
 	return &Cat{
-		CatId: u.CatId,
-		Url:   u.Url,
-		Tag:   u.Tag,
+		Url: u.Url,
+		Tag: u.Tag,
 	}
 }
 
 func (u *Cat) ToCatsResponse() *CatResponse {
 	if u != nil {
 		return &CatResponse{
-			CatId: u.CatId,
-			Url:   u.Url,
-			Tag:   u.Tag,
+			Url: u.Url,
+			Tag: u.Tag,
 		}
 	}
 	return nil
 }
 
 type Cat struct {
-	CatId string `json:"cat_id"`
-	Url   string `json:"url"`
-	Tag   string `json:"tag"`
+	Url string `json:"url"`
+	Tag string `json:"tag"`
 }
 
 type CatRequest struct {
-	CatId string `json:"cat_id"`
-	Url   string `json:"url"`
-	Tag   string `json:"tag"`
+	Url string `json:"url"`
+	Tag string `json:"tag"`
 }
 
 type CatResponse struct {
-	CatId string `json:"cat_id"`
-	Url   string `json:"url"`
-	Tag   string `json:"tag"`
+	Url string `json:"url"`
+	Tag string `json:"tag"`
 }

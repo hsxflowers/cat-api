@@ -47,7 +47,6 @@ func (s *Service) Create(ctx context.Context, req *domain.CatRequest) error {
 
 func (s *Service) toCatResponse(cat *domain.Cat) *domain.CatResponse {
 	return &domain.CatResponse{
-		CatId: cat.CatId,
 		Url:   cat.Url,
 		Tag:   cat.Tag,
 	}
