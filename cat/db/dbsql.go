@@ -22,12 +22,12 @@ func NewSQLStore(db *sql.DB) *SQLStore {
 
 func (s *SQLStore) Get(ctx context.Context, tag string) (*domain.Cat, error) {
 	var cat domain.Cat
-    var catId, url, tagResult string
+    var url, tagResult string
 
-    query := "SELECT cat_id, url, tag FROM cats WHERE tag = $1 ORDER BY RANDOM() LIMIT 1"
+    query := "SELECT url, tag FROM cats WHERE tag = $1 ORDER BY RANDOM() LIMIT 1"
     row := s.db.QueryRowContext(ctx, query, tag)
 
-    err := row.Scan(&catId, &url, &tagResult)
+    err := row.Scan(&url, &tagResult)
     if err != nil {
         if err == sql.ErrNoRows {
             return nil, exceptions.New(exceptions.ErrCatNotFound, err)
@@ -36,7 +36,6 @@ func (s *SQLStore) Get(ctx context.Context, tag string) (*domain.Cat, error) {
         return nil, exceptions.New(exceptions.ErrInternalServer, err)
     }
 
-    cat.CatId = catId
     cat.Url = url
     cat.Tag = tagResult
 
