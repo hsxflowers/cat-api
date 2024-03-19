@@ -40,3 +40,8 @@ Para rodar o código, após ter Golang instalado, rode o seguinte comando:
   go run .\cmd\api\main.go
 ```
 
+## Restante do projeto
+
+ - [Cat Images](https://github.com/hsxflowers/cat-images)
+ - [Python emotion API](https://github.com/hsxflowers/cat-ia)
+ - [JS & Front Web](https://github.com/hsxflowers/cat-web)
